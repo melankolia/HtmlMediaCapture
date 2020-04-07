@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+</head>
+<body style="text-align: center;">
+    <h1>WEB RTC</h1>
+    <video id="player" autoplay style="display: inline-block;"></video> <br>
+    <button id="capture" type="button" class="btn btn-success" style="margin: 20px auto">Capture</button> <br>
+    <img src="">
+    <canvas id="canvas" style="display: none;"></canvas>
+    <script>
+      const player = document.getElementById('player');
+      const canvas = document.getElementById('canvas');
+      const capture = document.getElementById('capture');
+      const img = document.querySelector('img');
+    //   const context = canvas.getContext('2d');
+      const captureButton = document.getElementById('capture');
+    
+      const constraints = {
+        video: true,
+      };
+
+      console.log(player.videoWidth)
+    
+      captureButton.addEventListener('click', () => {
+        // Draw the video frame to the canvas.
+        // context.drawImage(player, 0, 0, canvas.width, canvas.height);
+        canvas.width = player.videoWidth;
+        canvas.height = player.videoHeight;
+        canvas.getContext('2d').drawImage(player, 0, 0);
+        // Other browsers will fall back to image/png
+        console.log(canvas.toDataURL('image/png'))
+        img.src = canvas.toDataURL('image/png');
+
+      });
+    
+      // Attach the video stream to the video element and autoplay.
+      navigator.mediaDevices.getUserMedia(constraints)
+        .then((stream) => {
+          player.srcObject = stream;
+        })
+    </script>
+</body>
+</html>
